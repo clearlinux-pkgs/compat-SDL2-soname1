@@ -6,7 +6,7 @@
 #
 Name     : compat-SDL2-soname1
 Version  : 2.0.5
-Release  : 6
+Release  : 7
 URL      : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source99 : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz.sig
@@ -110,7 +110,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1506264413
+export SOURCE_DATE_EPOCH=1506264585
 mkdir clr-build
 pushd clr-build
 cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=/usr/lib64 -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DVIDEO_WAYLAND=off -DWAYLAND_SHARED=off
@@ -126,7 +126,7 @@ make VERBOSE=1  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1506264413
+export SOURCE_DATE_EPOCH=1506264585
 rm -rf %{buildroot}
 pushd clr-build32
 %make_install32
@@ -244,10 +244,10 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
-%exclude /usr/lib64/libSDL2-2.0.so.0.4.1
-%exclude /usr/lib64/libSDL2-2.0.so.1
+/usr/lib64/libSDL2-2.0.so.0.4.1
+/usr/lib64/libSDL2-2.0.so.1
 
 %files lib32
 %defattr(-,root,root,-)
-%exclude /usr/lib32/libSDL2-2.0.so.0.4.1
-%exclude /usr/lib32/libSDL2-2.0.so.1
+/usr/lib32/libSDL2-2.0.so.0.4.1
+/usr/lib32/libSDL2-2.0.so.1

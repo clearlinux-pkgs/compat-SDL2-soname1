@@ -87,7 +87,3 @@
 /usr/lib32/libSDL2.so
 /usr/lib32/pkgconfig/32sdl2.pc
 /usr/lib32/pkgconfig/sdl2.pc
-/usr/lib64/libSDL2-2.0.so.0.4.1
-/usr/lib64/libSDL2-2.0.so.1
-/usr/lib32/libSDL2-2.0.so.0.4.1
-/usr/lib32/libSDL2-2.0.so.1
