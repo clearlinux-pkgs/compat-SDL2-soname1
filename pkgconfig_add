@@ -1,0 +1,28 @@
+# This file contains additional pkgconfig build requirements that did
+# not get picked up automatically. One name per line, no whitespace.
+gl
+libusb-1.0
+alsa
+dbus-1
+x11
+xcursor
+xrandr
+xinerama
+xext
+xi
+xkbcommon
+32gl
+32libusb-1.0
+32alsa
+32dbus-1
+32x11
+32xcursor
+32xrandr
+32xinerama
+32xext
+32xi
+32xkbcommon
+libpulse-simple
+32libpulse-simple
+wayland-protocols
+32wayland-protocols

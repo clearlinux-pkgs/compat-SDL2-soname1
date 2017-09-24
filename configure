@@ -1,0 +1,8 @@
+--enable-sdl-dlopen
+--enable-pulseaudio-shared 
+--enable-alsa
+--disable-video-wayland
+--disable-wayland-shared
+
+
+

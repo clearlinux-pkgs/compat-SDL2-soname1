@@ -1,0 +1,11 @@
+# This file contains pkgconfig build requirements that get picked up
+# but are undesirable. One entry per line, no whitespace.
+mircommon
+mirclient
+esound
+32mircommon
+32mirclient
+32esound
+
+wayland-protocols
+32wayland-protocols
