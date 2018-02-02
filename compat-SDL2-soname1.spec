@@ -6,7 +6,7 @@
 #
 Name     : compat-SDL2-soname1
 Version  : 2.0.5
-Release  : 7
+Release  : 8
 URL      : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source99 : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz.sig
