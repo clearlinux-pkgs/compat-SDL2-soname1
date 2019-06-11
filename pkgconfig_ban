@@ -9,3 +9,23 @@ esound
 
 wayland-protocols
 32wayland-protocols
+# This file contains pkgconfig build requirements that get picked up
+# but are undesirable. One entry per line, no whitespace.
+mircommon
+mirclient
+esound
+32mircommon
+32mirclient
+32esound
+jack
+32jack
+32bcm_host
+32brcmegl
+32directfb
+32fusionsound
+bcm_host
+brcmegl
+directfb
+fusionsound
+32fox17
+fox17

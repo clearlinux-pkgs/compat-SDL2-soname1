@@ -6,16 +6,17 @@
 #
 Name     : compat-SDL2-soname1
 Version  : 2.0.5
-Release  : 10
+Release  : 11
 URL      : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source99 : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
 License  : CPL-1.0 Zlib
-Requires: compat-SDL2-soname1-bin
-Requires: compat-SDL2-soname1-lib
-BuildRequires : cmake
+Requires: compat-SDL2-soname1-bin = %{version}-%{release}
+Requires: compat-SDL2-soname1-lib = %{version}-%{release}
+Requires: compat-SDL2-soname1-license = %{version}-%{release}
+BuildRequires : buildreq-cmake
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -25,9 +26,14 @@ BuildRequires : libXxf86vm-dev
 BuildRequires : libXxf86vm-dev32
 BuildRequires : pkgconfig(32alsa)
 BuildRequires : pkgconfig(32dbus-1)
+BuildRequires : pkgconfig(32egl)
 BuildRequires : pkgconfig(32gl)
 BuildRequires : pkgconfig(32libpulse-simple)
 BuildRequires : pkgconfig(32libusb-1.0)
+BuildRequires : pkgconfig(32wayland-client)
+BuildRequires : pkgconfig(32wayland-cursor)
+BuildRequires : pkgconfig(32wayland-egl)
+BuildRequires : pkgconfig(32wayland-scanner)
 BuildRequires : pkgconfig(32x11)
 BuildRequires : pkgconfig(32xcursor)
 BuildRequires : pkgconfig(32xext)
@@ -37,9 +43,14 @@ BuildRequires : pkgconfig(32xkbcommon)
 BuildRequires : pkgconfig(32xrandr)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(dbus-1)
+BuildRequires : pkgconfig(egl)
 BuildRequires : pkgconfig(gl)
 BuildRequires : pkgconfig(libpulse-simple)
 BuildRequires : pkgconfig(libusb-1.0)
+BuildRequires : pkgconfig(wayland-client)
+BuildRequires : pkgconfig(wayland-cursor)
+BuildRequires : pkgconfig(wayland-egl)
+BuildRequires : pkgconfig(wayland-scanner)
 BuildRequires : pkgconfig(x11)
 BuildRequires : pkgconfig(xcursor)
 BuildRequires : pkgconfig(xext)
@@ -47,6 +58,7 @@ BuildRequires : pkgconfig(xi)
 BuildRequires : pkgconfig(xinerama)
 BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(xrandr)
+Patch1: CVE-2019-7635.patch
 
 %description
 This is the Simple DirectMedia Layer, a generic API that provides low
@@ -56,6 +68,7 @@ multiple platforms.
 %package bin
 Summary: bin components for the compat-SDL2-soname1 package.
 Group: Binaries
+Requires: compat-SDL2-soname1-license = %{version}-%{release}
 
 %description bin
 bin components for the compat-SDL2-soname1 package.
@@ -64,9 +77,10 @@ bin components for the compat-SDL2-soname1 package.
 %package dev
 Summary: dev components for the compat-SDL2-soname1 package.
 Group: Development
-Requires: compat-SDL2-soname1-lib
-Requires: compat-SDL2-soname1-bin
-Provides: compat-SDL2-soname1-devel
+Requires: compat-SDL2-soname1-lib = %{version}-%{release}
+Requires: compat-SDL2-soname1-bin = %{version}-%{release}
+Provides: compat-SDL2-soname1-devel = %{version}-%{release}
+Requires: compat-SDL2-soname1 = %{version}-%{release}
 
 %description dev
 dev components for the compat-SDL2-soname1 package.
@@ -75,9 +89,9 @@ dev components for the compat-SDL2-soname1 package.
 %package dev32
 Summary: dev32 components for the compat-SDL2-soname1 package.
 Group: Default
-Requires: compat-SDL2-soname1-lib32
-Requires: compat-SDL2-soname1-bin
-Requires: compat-SDL2-soname1-dev
+Requires: compat-SDL2-soname1-lib32 = %{version}-%{release}
+Requires: compat-SDL2-soname1-bin = %{version}-%{release}
+Requires: compat-SDL2-soname1-dev = %{version}-%{release}
 
 %description dev32
 dev32 components for the compat-SDL2-soname1 package.
@@ -86,6 +100,7 @@ dev32 components for the compat-SDL2-soname1 package.
 %package lib
 Summary: lib components for the compat-SDL2-soname1 package.
 Group: Libraries
+Requires: compat-SDL2-soname1-license = %{version}-%{release}
 
 %description lib
 lib components for the compat-SDL2-soname1 package.
@@ -94,40 +109,70 @@ lib components for the compat-SDL2-soname1 package.
 %package lib32
 Summary: lib32 components for the compat-SDL2-soname1 package.
 Group: Default
+Requires: compat-SDL2-soname1-license = %{version}-%{release}
 
 %description lib32
 lib32 components for the compat-SDL2-soname1 package.
 
 
+%package license
+Summary: license components for the compat-SDL2-soname1 package.
+Group: Default
+
+%description license
+license components for the compat-SDL2-soname1 package.
+
+
 %prep
 %setup -q -n SDL2-2.0.5
-pushd ..
-cp -a SDL2-2.0.5 build32
-popd
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1506264585
-mkdir clr-build
+export SOURCE_DATE_EPOCH=1560290989
+mkdir -p clr-build
 pushd clr-build
-cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=/usr/lib64 -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DVIDEO_WAYLAND=off -DWAYLAND_SHARED=off
-make VERBOSE=1  %{?_smp_mflags}
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+%cmake .. -DVIDEO_WAYLAND=off -DWAYLAND_SHARED=off
+make  %{?_smp_mflags} VERBOSE=1
 popd
-mkdir clr-build32
+mkdir -p clr-build32
 pushd clr-build32
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=32 -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DVIDEO_WAYLAND=off -DWAYLAND_SHARED=off
-make VERBOSE=1  %{?_smp_mflags}
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+%cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_INSTALL_LIBDIR=/usr/lib32 -DLIB_SUFFIX=32 .. -DVIDEO_WAYLAND=off -DWAYLAND_SHARED=off
+make  %{?_smp_mflags} VERBOSE=1
+unset PKG_CONFIG_PATH
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1506264585
+export SOURCE_DATE_EPOCH=1560290989
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1
+cp COPYING.txt %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1/COPYING.txt
+cp Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1/Xcode-iOS_Demos_data_bitmapfont_license.txt
+cp Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1/Xcode_SDL_pkg-support_resources_License.txt
 pushd clr-build32
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -251,3 +296,9 @@ popd
 %defattr(-,root,root,-)
 /usr/lib32/libSDL2-2.0.so.0.4.1
 /usr/lib32/libSDL2-2.0.so.1
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/compat-SDL2-soname1/COPYING.txt
+/usr/share/package-licenses/compat-SDL2-soname1/Xcode-iOS_Demos_data_bitmapfont_license.txt
+/usr/share/package-licenses/compat-SDL2-soname1/Xcode_SDL_pkg-support_resources_License.txt
