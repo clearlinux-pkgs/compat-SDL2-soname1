@@ -6,7 +6,7 @@
 #
 Name     : compat-SDL2-soname1
 Version  : 2.0.5
-Release  : 12
+Release  : 13
 URL      : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source1 : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz.sig
@@ -60,8 +60,9 @@ BuildRequires : pkgconfig(xinerama)
 BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(xrandr)
 Patch1: 0001-build-Match-types-with-khrplatform.h.patch
-Patch2: CVE-2019-7635.patch
-Patch3: CVE-2019-13616.patch
+Patch2: CVE-2019-7572.patch
+Patch3: CVE-2019-7635.patch
+Patch4: CVE-2019-13616.patch
 
 %description
 This is the Simple DirectMedia Layer, a generic API that provides low
@@ -99,13 +100,14 @@ license components for the compat-SDL2-soname1 package.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564940328
+export SOURCE_DATE_EPOCH=1565458003
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -140,7 +142,7 @@ unset PKG_CONFIG_PATH
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1564940328
+export SOURCE_DATE_EPOCH=1565458003
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1
 cp COPYING.txt %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1/COPYING.txt
