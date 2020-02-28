@@ -6,10 +6,10 @@
 #
 Name     : compat-SDL2-soname1
 Version  : 2.0.5
-Release  : 15
+Release  : 16
 URL      : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
-Source1 : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz.sig
+Source1  : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
 License  : CPL-1.0 Zlib
@@ -17,7 +17,6 @@ Requires: compat-SDL2-soname1-lib = %{version}-%{release}
 Requires: compat-SDL2-soname1-license = %{version}-%{release}
 BuildRequires : apache-ant
 BuildRequires : buildreq-cmake
-BuildRequires : buildreq-mvn
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -99,6 +98,7 @@ license components for the compat-SDL2-soname1 package.
 
 %prep
 %setup -q -n SDL2-2.0.5
+cd %{_builddir}/SDL2-2.0.5
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -109,7 +109,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567834882
+export SOURCE_DATE_EPOCH=1582918133
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -121,7 +121,7 @@ export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -
 export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
 %cmake .. -DVIDEO_WAYLAND=off -DWAYLAND_SHARED=off
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 popd
 mkdir -p clr-build32
 pushd clr-build32
@@ -139,17 +139,17 @@ export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_INSTALL_LIBDIR=/usr/lib32 -DLIB_SUFFIX=32 .. -DVIDEO_WAYLAND=off -DWAYLAND_SHARED=off
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 unset PKG_CONFIG_PATH
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1567834882
+export SOURCE_DATE_EPOCH=1582918133
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1
-cp COPYING.txt %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1/COPYING.txt
-cp Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1/Xcode-iOS_Demos_data_bitmapfont_license.txt
-cp Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1/Xcode_SDL_pkg-support_resources_License.txt
+cp %{_builddir}/SDL2-2.0.5/COPYING.txt %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1/cfa5d68483e9d77fe1801a48ced2bda465df1519
+cp %{_builddir}/SDL2-2.0.5/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1/40e37820c4fd40cc2914e1df5b24158e312e9623
+cp %{_builddir}/SDL2-2.0.5/Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/compat-SDL2-soname1/a2899dd05c516ae9918d3f15c013a0e46d6f8cfa
 pushd clr-build32
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -268,6 +268,6 @@ rm -f %{buildroot}/usr/lib32/pkgconfig/sdl2.pc
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/compat-SDL2-soname1/COPYING.txt
-/usr/share/package-licenses/compat-SDL2-soname1/Xcode-iOS_Demos_data_bitmapfont_license.txt
-/usr/share/package-licenses/compat-SDL2-soname1/Xcode_SDL_pkg-support_resources_License.txt
+/usr/share/package-licenses/compat-SDL2-soname1/40e37820c4fd40cc2914e1df5b24158e312e9623
+/usr/share/package-licenses/compat-SDL2-soname1/a2899dd05c516ae9918d3f15c013a0e46d6f8cfa
+/usr/share/package-licenses/compat-SDL2-soname1/cfa5d68483e9d77fe1801a48ced2bda465df1519
